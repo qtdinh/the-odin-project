@@ -1,0 +1,50 @@
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    height: 100vh;
+}
+
+.upper-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #1F2937;
+    color: #F9FAF8;
+}
+
+.upper-section {
+    width: 800px;
+}
+
+.content {
+    font-size: 18px;
+    color: #E5E7EB;
+}
+
+#header-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style: none; /*remove bullet points*/
+}
+
+#upper-paragraph {
+    padding-top: 75px;
+    padding-bottom: 75px;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logo {
+    font-size: 24px;
+}
