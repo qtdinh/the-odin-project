@@ -1,6 +1,7 @@
 body {
     display: flex;
     flex-direction: column;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     height: 100vh;
 }
@@ -14,32 +15,46 @@ body {
 }
 
 .upper-section {
-    width: 800px;
+    width: 1050px;
 }
 
-.content {
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.secondary-text {
     font-size: 18px;
     color: #E5E7EB;
 }
 
-#header-row {
+.row {
     display: flex;
-    gap: 20px;
     align-items: center;
-    margin: 0;
     padding: 0;
+}
+
+.row #header-links {
+    gap: 20px;
+}
+
+.row #cards {
+    gap: 40px;
 }
 
 ul {
     list-style: none; /*remove bullet points*/
 }
 
-#upper-paragraph {
-    padding-top: 75px;
-    padding-bottom: 75px;
+#upper-main {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 100px;
+    padding-bottom: 125px;
+    gap: 40px;
 }
 
-#header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,4 +62,48 @@ ul {
 
 #logo {
     font-size: 24px;
+    font-weight: bold;
+}
+
+.main-text {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+#upper-main div p {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.main-text, .secondary-text,
+button {
+    margin: 0;
+}
+
+button {
+    padding: 7px 36px;
+    border-radius: 8px;
+    background: #3882F6;
+    border: 1px solid #3882F6;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 6px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.information-text {
+    font-size: 36px;
+    font-weight: 800;
+
+}
+
+.cards {
+    display: flex;
+    
 }
