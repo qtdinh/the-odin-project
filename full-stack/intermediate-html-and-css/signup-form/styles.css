@@ -115,15 +115,6 @@ input:focus {
     box-shadow: 2px 2px 3px #ccc;
 }
 
-.error:valid {
-    border: 1.5px solid #E5E7EB;
-    box-sizing: border-box;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    border-radius: 3px;
-}
-
 .error:invalid {
     outline: none;
     border-color: red !important;
