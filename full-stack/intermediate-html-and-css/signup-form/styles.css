@@ -5,6 +5,7 @@
 
 :root {
     --background-tone: #596D48;
+    --main-content: #F9FAFB;
 }
 
 body {
@@ -14,11 +15,15 @@ body {
     min-height: 100vh;
   }
 
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
 .side-background {
-    width: 25vw;
+    width: 40vw;
     position: relative;
     color: white;
-    background-color: royalblue;
     background-image: url("./halie-west-25xggax4bSA-unsplash.jpg");
     background-position: center;
     background-size: cover;
@@ -35,11 +40,124 @@ body {
     font-family: norse-bold;
     font-size: 60px;
     padding: 10px;
-    top: 120px;
+    top: 20%;
     right: 0;
 }
 
 .logo-picture {
     display: inline-block;
     width: 65px;
+}
+
+.footer {
+    margin-top: auto;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.content {
+    display: flex;
+    background-color: var(--main-content);
+    justify-content: center;
+    width: 100%;
+}
+
+.content > * {
+    padding-left: 40px;
+}
+
+label {
+    font-size: 10px;
+    font-weight: bold;
+    color: rgb(83, 83, 83)
+}
+
+form {
+    /*horizontal offset | vertical | blur radius | spread radius | color */
+    box-shadow: 0 -1px 1px -1px lightgray, 
+    0 4px 5px -2px lightgray;
+    background-color: white;
+}
+
+form section {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+form input, form label {
+    display: block;
+    width: 200px;
+}
+
+.inputs {
+    display: flex;
+    flex-wrap: wrap;
+    height: 175px;
+    width: 700px;
+}
+
+.inputs > * {
+    flex: 0 0 calc(40%);
+}
+
+input {
+    border: 1.5px solid #E5E7EB;
+    box-sizing: border-box;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    border-radius: 3px;
+}
+
+input:focus {
+    outline: none;
+    border-color: blue !important;
+    box-shadow: 2px 2px 3px #ccc;
+}
+
+.error:valid {
+    border: 1.5px solid #E5E7EB;
+    box-sizing: border-box;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    border-radius: 3px;
+}
+
+.error:invalid {
+    outline: none;
+    border-color: red !important;
+}
+
+.help-text {
+    color: red;
+    font-size: 12px;
+}
+
+button[type="submit"] {
+    background-color: var(--background-tone);
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    width: 180px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #ccc;
+    border: 0;
+}
+
+#create {
+    margin-top: 30px;
+}
+
+#create > p > a {
+    text-decoration: none;
+    color: var(--background-tone);
+    font-weight: bold;
+}
+
+.description {
+    font-weight: bold;
+    width: 500px;
+    line-height: 1.2;
+    margin-top: bottom;
 }

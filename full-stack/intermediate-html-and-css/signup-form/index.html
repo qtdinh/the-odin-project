@@ -4,26 +4,80 @@
         <meta charset="UTF-8">
         <title>Sign-up Form</title>
         <link rel="stylesheet" href="styles.css">
+        <script src="sf.js" defer></script>
     </head>
     <body>
         <!--1. Scaffolding the page-->
 
-        <div class="side-background">
+        <div class="side-background column">
             <div class="logo">
                 <img class="logo-picture" src="./odin-lined.png" alt="Logo picture">
                 ODIN
             </div>
             <div class="footer">
-                Photo by Halie West on Unsplash
+                Photo by <u>Halie West</u> on <u>Unsplash</u>
             </div>
         </div>
 
-        <form class="main">
-            This is not a real online service! You know you need something like this in your life
-            to help you realize your deepest dreams.<br>
-            Sign up <em>now</em> to get started.<br>
-            You <em>know</em> you want to.
-        </form>
+        <div class="content column">
+            <p class="description">
+                This is not a real online service! You know you need something like this
+                in your life to help you realize your deepest dreams.<br>
+
+                Sign up <em>now</em> to get started. 
+                <br><br>
+                You <em>know</em> you want to.
+            </p>
+
+
+            <form class="signup" action method>
+                <section>
+                    <p class="description">Let's do this!</p>
+                    
+                    <div class="inputs">
+                        <div>
+                            <label for="first-name">FIRST NAME</label>
+                            <input type="text" id="first-name" name="first_name"/>
+                        </div>
+
+                        <div>
+                            <label for="last-name">LAST NAME</label>
+                            <input type="text" id="last-name" name="last_name"/>
+                        </div>
+
+                        <div>
+                            <label for="email-address">EMAIL</label>
+                            <input type="email" id="email-address" name="email_address" required/>
+                        </div>
+
+                        <div>
+                            <label for="phone-number">PHONE NUMBER</label>
+                            <input type="tel" id="phone-number" name="phone_number" required/>
+                        </div>
+
+                        <div>
+                            <label for="password">PASSWORD</label>
+                            <input type="password" id="password" name="password" class="error" oninput="checkPassword()" required/>
+                            <span class="help-text">*Passwords do not match</span>
+                        </div>
+
+                        <div>
+                            <label for="confirm-password">CONFIRM PASSWORD</label>
+                            <input type="password" id="confirm-password" name="confirmed" class="error" oninput="checkPassword()" required/>
+                        </div>
+                    </div>
+
+                </section>
+
+            </form>
+
+            <div id ="create">
+                <button type="submit" form="signup">Create Account</button>
+                <p>Already have an account? <a href="#">Log in.</a></p>
+            </div>
+
+
+        </div>
 
     </body>
 </html>
