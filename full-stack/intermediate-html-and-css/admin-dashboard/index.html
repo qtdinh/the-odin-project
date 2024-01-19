@@ -4,37 +4,38 @@
         <meta charset="UTF-8">
         <title>Admin Dashboard</title>
         <link rel="stylesheet" href="styles.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
 
         <nav class="sidebar">
-            <div class="dashboard">
+            <div class="dashboard adjacent-items">
                 <img src="./icons/view-dashboard.svg" alt="Home">
-                <h2 class>Dashboard</h2>
+                <h2>Dashboard</h2>
             </div>
             <div class="navigation">
                 <ul>
-                    <li>
+                    <li class="adjacent-items">
                         <img src="./icons/home.svg" alt="Home">
                         <p>Home</p>
                     </li>
-                    <li>
+                    <li class="adjacent-items">
                         <img src="./icons/card-account-details-outline.svg" alt="Profile">
                         <p>Profile</p>
                     </li>             
-                    <li>
+                    <li class="adjacent-items">
                         <img src="./icons/message-reply.svg" alt="Messages">
                         <p>Messages</p>
                     </li>             
-                    <li>
+                    <li class="adjacent-items">
                         <img src="./icons/clock-time-three-outline.svg" alt="History">
                         <p>History</p>
                     </li>             
-                    <li>
+                    <li class="adjacent-items">
                         <img src="./icons/file-multiple.svg" alt="Tasks">
                         <p>Tasks</p>
                     </li>             
-                    <li>
+                    <li class="adjacent-items">
                         <img src="./icons/account-group.svg" alt="Communities">
                         <p>Communities</p>
                     </li>             
@@ -42,29 +43,91 @@
 
                 <div class="profile-settings">
                     <ul>
-                        <li>
+                        <li class="adjacent-items">
                             <img src="./icons/cog.svg" alt="Settings">
                             <p>Settings</p>
                         </li>             
-                        <li>
+                        <li class="adjacent-items">
                             <img src="./icons/help-box.svg" alt="Support">
                             <p>Support</p>
                         </li>
-                        <li>
+                        <li class="adjacent-items">
                             <img src="./icons/shield-check.svg" alt="Privacy">
                             <p>Privacy</p>
                         </li>
                     </ul>
                 </div>
             </div>
-        </div>
+        </nav>
 
         <div class="main">
             <header class="header">
+                <div class="search adjacent-items" >
+                    <img src="./icons/magnify.svg" alt="Search">
+                    <input type="text">
+                </div>
+
+                <div class="profile adjacent-items">
+                    <img src="./icons/bell-outline.svg" alt="Notifications">
+                    <img class="profile-picture" src="./pictures/chiikawa.png" alt="Profile Picture">
+                    <p><strong>Chiikawa</strong></p>
+                </div>
+                
+                <div class="welcome adjacent-items">
+                    <!-- todo: pfp and buttons-->
+                    <img class="profile-picture" src="./pictures/chiikawa.png" alt="Profile Picture">
+                    <div>   
+                        <strong>Hi there,</strong>
+                        <h2>Chiikawa (@chiikawa)</h2>
+                    </div>
+                </div>
+
+                <div class="buttons adjacent-items">
+                    <button>New</button>
+                    <button>Upload</button>
+                    <button>Share</button>
+                </div>
 
             </header>
 
             <div class="main-content">
+
+                <div>
+                    <h3>Your Projects</h3>
+                    <div class="projects">
+                        <div class="card" id="project">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, sint.</p>
+                        </div>
+                        <div class="card" id="project">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, sint.</p>
+                        </div>
+                        <div class="card" id="project">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, sint.</p>
+                        </div>
+                        <div class="card" id="project">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, sint.</p>
+                        </div>
+                        <div class="card" id="project">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, sint.</p>
+                        </div>
+                        <div class="card" id="project">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, sint.</p>
+                        </div>
+                    </div>
+<!--         
+                    <h3>Announcements</h3>
+                    <div class="card" id="announcements">
+                        Site Maintenance blah blah...
+
+                    </div>
+
+                    <h3>Trending</h3>
+                    <div class="card" id="trending">
+                        @basho
+                        bubashaa...
+                    </div> -->
+                </div>
+
 
             </div>
         </div>
