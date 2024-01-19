@@ -5,7 +5,7 @@
 
 body {
     display: grid;
-    grid-template: repeat(10, 1fr) / repeat(5, 1fr);
+    grid-template: repeat(10, max-content) / repeat(5, 1fr);
     font-family: 'Roboto', sans-serif; 
     background-color: green;
     margin: 0;
@@ -15,7 +15,7 @@ body {
 
 .sidebar {
     display: grid;
-    grid-template: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-row: 1 / max-content;
     background-color: var(--curious-blue);
     color: white;
@@ -23,12 +23,8 @@ body {
     min-height: 100vh;
     padding-left: 20px;
     padding-right: 20px;
-
 }
 
-.navigation > * {
-    height: 350px;
-}
 
 
 .sidebar ul li {
@@ -36,6 +32,7 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
+    font-size: 20px;
 }
 
 .sidebar ul {
@@ -60,6 +57,7 @@ img[src^="./icons"]{
 
 .header {
     display: grid;
+    padding-top: 1rem;
     padding-left: 2rem;
     padding-bottom: 0.5rem;
     background-color: white;
@@ -109,11 +107,13 @@ img[src^="./icons"]{
 }
 
 .buttons > button {
-    height: 35px;
+    height: 40px;
+    width: 100px;
     border-radius: 20px;
     border: none;
     color: white;
     background-color: var(--curious-blue);
+    font-size: 15px;
     font-weight: bold;
 }
 
@@ -131,8 +131,8 @@ img[src^="./icons"]{
     margin-right: 30px;
 }
 
-.profile > .profile-picture {
-    height: 45px;
+.small {
+    height: 50px;
 }
 
 .header h2 {
@@ -140,25 +140,131 @@ img[src^="./icons"]{
     margin-bottom: 0;
 }
 
-h3 {
+h2 {
     margin: 0;
 }
 
 .main-content {
+    display: grid;
+    grid-template-rows: 30px max-content;
+    grid-template-columns: auto 20%;
     grid-row: 2 / max-content;
     padding: 1rem 0.5rem 1rem 1em;
     background-color: pink;
     color: var(--dark-gray);
+    gap: 1rem;
 }
 
-.cards {
-    display: inline-grid;
-    grid-template: repeat(6, 1fr) / repeat(3, minmax(200px, max-content));
-    background-color: yellow;
+.projects {
+    display: grid;
+    grid-template: 30px 1fr 1fr / repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: 1fr;
+    grid-column: 1;
+    grid-row: 1 / max-content;
+    gap: 0.5rem;
+}
+
+.projects > h2 {
+    grid-row: 1;
+    grid-column: 1 / -1;
 }
 
 .card {
+    display: grid;
     background-color: white;
-    height: 110px;
-    width: 100px;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 1px 2px 5px darkgray;
+    grid-row: span 1;
+}
+
+.card-text {
+    padding-left: 20px;
+}
+
+#project {
+    position: relative;
+}
+
+#project p {
+    margin: 0;
+}
+
+.feed {
+    display: grid;
+    grid-template-rows: max-content max-content;
+    grid-template-columns: fit-content;
+    grid-column: 2 / span 1;
+    grid-row: 1 / max-content;
+}
+
+.announcements, .trending {
+    display: grid;
+    grid-template-rows: 30px 1fr;
+    gap: 0.5rem;
+}
+
+#trend {
+    display: grid;
+    align-self: end;
+    gap: 1rem;
+}
+
+.feed h2 {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+#announcement {
+    grid-row: 2;
+}
+
+.feed-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 13px;
+    padding-top: 1.2rem;
+}
+
+.feed-text h4, .feed-text p {
+    margin: 0;
+    margin-left: 10px;
+}
+
+.feed-text p {
+    color: var(--dark-gray);
+    padding-bottom: 1.2rem;
+    width: 90%;
+    border-bottom: 1px solid rgba(169, 169, 169, 0.5);
+}
+
+.feed-text:last-of-type p {
+    border-bottom: none;
+}
+
+.color-block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(var(--curious-blue), pink);
+    border-radius: 10px 0 0 10px;
+    width: 5%;
+    margin-right: 10px;
+}
+
+.project-actions {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: repeat(3, 60px);
+    grid-row: 4;
+    align-self: center;
+    justify-self: end;
+    box-sizing: border-box;
+}
+
+.project-actions > * {
+    justify-self: center;
 }
