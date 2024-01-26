@@ -101,6 +101,11 @@ const game = (function () {
         gameBoard.boardArray = [];
         //reset/clear the grid every time
         gridContainer.innerHTML = '';
+        
+        const winTextElement = document.getElementById("win-text");
+        if (winTextElement) {
+            winTextElement.remove();
+        }
     
         //3x3 grid with boxes
         for(let i = 0; i < 9; i++) {
