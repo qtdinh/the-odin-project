@@ -1,0 +1,25 @@
+#book-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100vw;
+    gap: 10px;
+}
+
+#book-container > * {
+    position: relative;
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+}
+
+.buttons-container {
+    display: flex;
+    position: absolute;
+    justify-content: space-between;
+    width: 100%;
+    bottom: 0;
+}
+
+#new-book {
+    margin-bottom: 20px;
+}
