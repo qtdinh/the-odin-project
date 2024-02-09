@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>To-Do List</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="main.js" defer></script>
+    </head>
+    <body>
+        <header>
+            TO-DO LIST
+        </header>
+
+        <div class="body">
+            <div id="sidebar">
+                            <button id="new-project">New Project</button>
+                            <dialog id="project-dialog">
+                                <label for="project-name">Name of the Project:</label>
+                                <form method="dialog">
+                                    <input type="text" name="project-name" id="project-name" required>
+                            
+                                    <button id="project-submit" type="submit">OK</button>
+                                </form>
+                            </dialog>
+                            
+                            <button id="add-todo">Add task to a project</button>
+                            <dialog id="todo-dialog">
+                                <label for="todo-name">Name:</label>
+                                <label for="todo-desc">Description:</label>
+                                <label for="due-date">Due date:</label>
+                                <label for="priority">Priority:</label>
+                            
+                                <form method="dialog">
+                                    <input type="text" name="todo-name" id="todo-name" required>
+                                    <input type="text" name="todo-desc" id="todo-desc" required>
+                                    <input type="text" name="due-date" id="due-date" required>
+                                    <input type="text" name="priority" id="priority" required>
+                            
+                                    <button id="todo-submit" type="submit">OK</button>
+                                </form>
+                            </dialog>
+
+                <h1>Overview</h1>
+                <ol>
+                    <li>Tasks</li>
+                </ol>
+
+                <h1>Projects</h1>
+                <ol id="projects">
+    
+                </ol>
+            </div>
+
+            <div class="list-container">
+                <ol>
+                    <li>Task 1</li>
+                </ol>
+
+            </div>
+
+        </div>
+    </body>
+</html>
