@@ -10,4 +10,8 @@ export class Project {
     addTask(task) {
         this.tasks.push(task);
     }
+
+    getTasks() {
+        return this.tasks;
+    }
 }

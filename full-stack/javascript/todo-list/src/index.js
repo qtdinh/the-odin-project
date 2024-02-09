@@ -68,9 +68,26 @@ function addNewTask() {
     }
 
     const newTask = new Todo(taskName, taskDesc, dueDate, priority);
+
     //we probably need a list of projects to store
     defaultProject.addTask(newTask);
     console.log(defaultProject);
+}
+
+function displayTasks(project) {
+    const tasksContainer = document.querySelector(".list-container ol");
+
+    //reset the container
+    tasksContainer.innerHTML = "";
+    project.getTasks().forEach(task => {
+        //for each task, do what?
+        // create a li element
+        const projectTask = document.createElement("li");
+        // label with the name of the task
+        projectTask.innerText = task.name;
+        //append into the container
+        tasksContainer.appendChild(projectTask);
+    })
 }
 
 
@@ -86,8 +103,16 @@ defaultProjectElement.innerText = "Default";
 projects.appendChild(defaultProjectElement);
 
 const newTodo = new Todo("Example Todo", "Description", "2024-02-01", "High");
+const oneTodo = new Todo("Example Todo1", "Description", "2024-02-01", "High");
+const twoTodo = new Todo("Example Todo2", "Description", "2024-02-01", "High");
+const threeTodo = new Todo("Example Todo3", "Description", "2024-02-01", "High");
 defaultProject.addTask(newTodo);
+defaultProject.addTask(oneTodo);
+defaultProject.addTask(twoTodo);
+defaultProject.addTask(threeTodo);
 console.log(myProjects);
 // console.log(defaultProject);
+
+displayTasks(defaultProject);
 
 //4. Users should be able to create new projects and choose which project their todos go into
