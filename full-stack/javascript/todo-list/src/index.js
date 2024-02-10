@@ -16,6 +16,9 @@ const addTaskButton = document.getElementById("add-todo");
 const projectSubmitButton = document.getElementById("project-submit");
 const taskSubmitButton = document.getElementById("todo-submit");
 const projects = document.querySelector("#projects");
+const tasksContainer = document.querySelector(".list-container ol");
+const modal = document.getElementById("modal");
+const closeModal = document.getElementById("close-modal");
 
 createProjectButton.addEventListener('click', () => {
     document.getElementById("project-dialog").showModal();
@@ -25,12 +28,16 @@ addTaskButton.addEventListener('click', () => {
     document.getElementById("todo-dialog").showModal();
 })
 
-projectSubmitButton.addEventListener('click', (event) => {
+projectSubmitButton.addEventListener('click', () => {
     createNewProject();
 })
 
-taskSubmitButton.addEventListener('click', (event) => {
+taskSubmitButton.addEventListener('click', () => {
     addNewTask();
+})
+
+closeModal.addEventListener('click', () => {
+    modal.classList.remove("open");
 })
 
 function createNewProject() {
@@ -47,6 +54,11 @@ function createNewProject() {
     const newProject = new Project(projectName);
     const newProjectElement = document.createElement("li");
     newProjectElement.innerText = projectName;
+
+    newProjectElement.addEventListener('click', () => {
+        displayTasks(newProject);
+    })
+
     projects.appendChild(newProjectElement);
     //we probably need a list of projects to store
     myProjects.push(newProject);
@@ -75,8 +87,6 @@ function addNewTask() {
 }
 
 function displayTasks(project) {
-    const tasksContainer = document.querySelector(".list-container ol");
-
     //reset the container
     tasksContainer.innerHTML = "";
     project.getTasks().forEach(task => {
@@ -85,6 +95,10 @@ function displayTasks(project) {
         const projectTask = document.createElement("li");
         // label with the name of the task
         projectTask.innerText = task.name;
+        projectTask.addEventListener('click', () => {
+            console.log("opened");
+            modal.classList.add("open");
+        })
         //append into the container
         tasksContainer.appendChild(projectTask);
     })
@@ -93,13 +107,17 @@ function displayTasks(project) {
 
 //How would I select a project...
 //When adding a todo, display a list of projects
-//Have the user check projects with radio buttons for multiple selection
-//Will use the addTask property of the specific project
+//Have a button in the sidebar that checks for project chosen
 
 const defaultProject = new Project("Default");
 myProjects.push(defaultProject);
 const defaultProjectElement = document.createElement("li");
 defaultProjectElement.innerText = "Default";
+
+defaultProjectElement.addEventListener('click', () => {
+    displayTasks(defaultProject);
+})
+
 projects.appendChild(defaultProjectElement);
 
 const newTodo = new Todo("Example Todo", "Description", "2024-02-01", "High");
@@ -112,7 +130,5 @@ defaultProject.addTask(twoTodo);
 defaultProject.addTask(threeTodo);
 console.log(myProjects);
 // console.log(defaultProject);
-
-displayTasks(defaultProject);
 
 //4. Users should be able to create new projects and choose which project their todos go into
