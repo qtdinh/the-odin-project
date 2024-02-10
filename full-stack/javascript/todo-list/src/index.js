@@ -8,6 +8,7 @@
 //3. how to implement projects/todo-lists
 import { Project } from './modules/Project';
 import { Todo } from './modules/Todo';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 const myProjects = [];
 
@@ -17,24 +18,37 @@ const projectSubmitButton = document.getElementById("project-submit");
 const taskSubmitButton = document.getElementById("todo-submit");
 const projects = document.querySelector("#projects");
 const tasksContainer = document.querySelector(".list-container ol");
-const modal = document.getElementById("modal");
-const body = document.querySelector(".body");
+const modal = document.getElementById("details");
+const editorModal = document.getElementById("task-editor");
+const closeButton = document.querySelector(".close-modal");
+
+closeButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    editorModal.classList.remove("open");
+})
 
 createProjectButton.addEventListener('click', () => {
-    document.getElementById("project-dialog").showModal();
+    editorModal.classList.add("open");
 })
 
-addTaskButton.addEventListener('click', () => {
-    document.getElementById("todo-dialog").showModal();
-})
+// addTaskButton.addEventListener('click', () => {
+//     document.getElementById("todo-dialog").showModal();
+// })
 
-projectSubmitButton.addEventListener('click', () => {
-    createNewProject();
-})
+// projectSubmitButton.addEventListener('click', () => {
+//     createNewProject();
+// })
 
-taskSubmitButton.addEventListener('click', () => {
-    addNewTask();
-})
+// taskSubmitButton.addEventListener('click', () => {
+//     addNewTask();
+// })
+
+
+function formatPropertyName(propertyName) {
+    return propertyName
+        .replace(/([A-Z])/g, ' $1') // Insert space before capital letters
+        .replace(/^./, str => str.toUpperCase()); // Capitalize the first letter
+}
 
 
 function createNewProject() {
@@ -90,36 +104,12 @@ function addNewTask() {
 }
 
 function createModal(projectName, task) {
-    /*
-        <div class="modal" id="modal">
-        <div class="modal-inner">
-            <button id="close-modal">×</button>
-            <h2> To-Do Task</h2>
-            <p id="task-name"><strong>Name:</strong> </p>
-            <p id="task-desc"><strong>Description:</strong> </p>
-            <p id="task-date"><strong>Due Date:</strong> </p>
-            <p id="task-priority"><strong>Priority:</strong> </p>
-        </div>
-    </div>
-    */
-
-    // const name = document.getElementById("task-name");
-    // const description = document.getElementById("task-desc");
-    // const dueDate = document.getElementById("task-date");
-    // const priority = document.getElementById("task-priority");
-
-
-    // name.innerText += task.name;
-    // description.innerText += task.description;
-    // dueDate.innerText += task.dueDate;
-    // priority.innerText += task.priority;
-
     const taskName = document.createElement("h2");
     const exitButton = document.createElement("button");
-    const modalInner = document.querySelector(".modal-inner");
+    const modalInner = document.querySelector(".details-inner");
 
     exitButton.innerText = "×";
-    exitButton.setAttribute("id", "close-modal");
+    exitButton.classList.add("close-modal");
 
     modalInner.innerHTML = "";
     taskName.innerText = `${task.name}`;
@@ -140,12 +130,12 @@ function createModal(projectName, task) {
 
     for (let i = 1; i < taskEntries.length; i++) {
         const [prop, value] = taskEntries[i];
+        const propName = formatPropertyName(prop);
         const newParagraph = document.createElement("p");
-        newParagraph.setAttribute("id", `${prop}`);
-        newParagraph.innerHTML = `<strong>${prop}: </strong> ${value}`
+        newParagraph.setAttribute("id", `${propName}`);
+        newParagraph.innerHTML = `<strong>${propName}: </strong> ${value}`
         modalInner.appendChild(newParagraph);
     }
-
 
 }
 
