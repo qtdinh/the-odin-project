@@ -37,11 +37,6 @@ header {
     padding-left: 20px;
 }
 
-button {
-    width: 100px;
-    height: 50px;
-}
-
 li {
     text-decoration: none;
     list-style-type: none;
@@ -74,7 +69,7 @@ li {
 }
 
 .list-container li:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
     box-shadow: 0px 2px 20px var(--lilac);
 }
 
@@ -82,7 +77,7 @@ li {
     transition: padding 200ms ease;
 }
 
-#sidebar li:hover {
+#sidebar li:hover, #sidebar li.selected {
     color: rgb(189, 20, 121);
     padding-left: 40px;
 }
@@ -121,10 +116,30 @@ ol:hover {
     padding: 20px;
     min-height: 25vh;
     min-width: 50vw;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .modal.open {
     opacity: 1;
     z-index: 999;
+}
+
+.modal p {
+    text-transform: capitalize;
+}
+
+#close-modal {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 35px;
+    
+}
+
+h2 {
+    margin: 0;
 }

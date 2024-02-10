@@ -13,6 +13,8 @@
 
         <div class="body">
             <div id="sidebar">
+
+
                 <button id="new-project">New Project</button>
                 <dialog id="project-dialog">
                     <label for="project-name">Name of the Project:</label>
@@ -41,7 +43,7 @@
                 </dialog>
 
                 <h1>Overview</h1>
-                <ol>
+                <ol id="tasks">
                     <li>Tasks</li>
                 </ol>
 
@@ -60,14 +62,13 @@
 
             <div class="modal" id="modal">
                 <div class="modal-inner">
-                    <h3> To-Do Task</h3>
-                    <p>
-                        Name<br>
-                        Properties<br>
-                        Description<br>
-                        Due Date<br>
-                    </p>
-                    <button id="close-modal"> Close</button>
+                </div>
+            </div>
+
+            <div class="task-editor">
+                <div class="task-editor-inner">
+                    <input type="text" placeholder="Task name" name="task-name" id="task-name" required />
+                    <input type="text" placeholder="Description" name="task-desc" id="task-desc" required />
                 </div>
             </div>
 

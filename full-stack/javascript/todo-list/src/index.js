@@ -18,7 +18,7 @@ const taskSubmitButton = document.getElementById("todo-submit");
 const projects = document.querySelector("#projects");
 const tasksContainer = document.querySelector(".list-container ol");
 const modal = document.getElementById("modal");
-const closeModal = document.getElementById("close-modal");
+const body = document.querySelector(".body");
 
 createProjectButton.addEventListener('click', () => {
     document.getElementById("project-dialog").showModal();
@@ -36,9 +36,6 @@ taskSubmitButton.addEventListener('click', () => {
     addNewTask();
 })
 
-closeModal.addEventListener('click', () => {
-    modal.classList.remove("open");
-})
 
 function createNewProject() {
     //should create a new instance of a project
@@ -56,7 +53,14 @@ function createNewProject() {
     newProjectElement.innerText = projectName;
 
     newProjectElement.addEventListener('click', () => {
+        const selectedItem = document.querySelector(".selected");
+
+        if (selectedItem) {
+            selectedItem.classList.remove("selected");
+        }
+    
         displayTasks(newProject);
+        newProjectElement.classList.add("selected");
     })
 
     projects.appendChild(newProjectElement);
@@ -80,15 +84,74 @@ function addNewTask() {
     }
 
     const newTask = new Todo(taskName, taskDesc, dueDate, priority);
-
     //we probably need a list of projects to store
     defaultProject.addTask(newTask);
     console.log(defaultProject);
 }
 
+function createModal(projectName, task) {
+    /*
+        <div class="modal" id="modal">
+        <div class="modal-inner">
+            <button id="close-modal">×</button>
+            <h2> To-Do Task</h2>
+            <p id="task-name"><strong>Name:</strong> </p>
+            <p id="task-desc"><strong>Description:</strong> </p>
+            <p id="task-date"><strong>Due Date:</strong> </p>
+            <p id="task-priority"><strong>Priority:</strong> </p>
+        </div>
+    </div>
+    */
+
+    // const name = document.getElementById("task-name");
+    // const description = document.getElementById("task-desc");
+    // const dueDate = document.getElementById("task-date");
+    // const priority = document.getElementById("task-priority");
+
+
+    // name.innerText += task.name;
+    // description.innerText += task.description;
+    // dueDate.innerText += task.dueDate;
+    // priority.innerText += task.priority;
+
+    const taskName = document.createElement("h2");
+    const exitButton = document.createElement("button");
+    const modalInner = document.querySelector(".modal-inner");
+
+    exitButton.innerText = "×";
+    exitButton.setAttribute("id", "close-modal");
+
+    modalInner.innerHTML = "";
+    taskName.innerText = `${task.name}`;
+
+    modalInner.appendChild(exitButton);
+    modalInner.appendChild(taskName);
+
+    exitButton.addEventListener('click', () => {
+        modal.classList.remove("open");
+    })
+
+    const newParagraph = document.createElement("p");
+    newParagraph.setAttribute("id", `${projectName}`);
+    newParagraph.innerHTML = `<strong>Project: </strong> ${projectName}`
+    modalInner.appendChild(newParagraph);
+
+    const taskEntries = Object.entries(task);
+
+    for (let i = 1; i < taskEntries.length; i++) {
+        const [prop, value] = taskEntries[i];
+        const newParagraph = document.createElement("p");
+        newParagraph.setAttribute("id", `${prop}`);
+        newParagraph.innerHTML = `<strong>${prop}: </strong> ${value}`
+        modalInner.appendChild(newParagraph);
+    }
+
+
+}
+
 function displayTasks(project) {
     //reset the container
-    tasksContainer.innerHTML = "";
+    tasksContainer.innerHTML = "";;
     project.getTasks().forEach(task => {
         //for each task, do what?
         // create a li element
@@ -96,7 +159,7 @@ function displayTasks(project) {
         // label with the name of the task
         projectTask.innerText = task.name;
         projectTask.addEventListener('click', () => {
-            console.log("opened");
+            createModal(project.name, task);
             modal.classList.add("open");
         })
         //append into the container
@@ -115,15 +178,22 @@ const defaultProjectElement = document.createElement("li");
 defaultProjectElement.innerText = "Default";
 
 defaultProjectElement.addEventListener('click', () => {
+    const selectedItem = document.querySelector(".selected");
+
+    if (selectedItem) {
+        selectedItem.classList.remove("selected");
+    }
+    
     displayTasks(defaultProject);
+    defaultProjectElement.classList.add("selected");
 })
 
 projects.appendChild(defaultProjectElement);
 
 const newTodo = new Todo("Example Todo", "Description", "2024-02-01", "High");
-const oneTodo = new Todo("Example Todo1", "Description", "2024-02-01", "High");
-const twoTodo = new Todo("Example Todo2", "Description", "2024-02-01", "High");
-const threeTodo = new Todo("Example Todo3", "Description", "2024-02-01", "High");
+const oneTodo = new Todo("Example Todo1", "Description", "2024-02-02", "High");
+const twoTodo = new Todo("Example Todo2", "Description", "2024-02-03", "High");
+const threeTodo = new Todo("Example Todo3", "Description", "2024-02-04", "High");
 defaultProject.addTask(newTodo);
 defaultProject.addTask(oneTodo);
 defaultProject.addTask(twoTodo);

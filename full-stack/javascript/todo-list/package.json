@@ -12,5 +12,8 @@
     "webpack": "^5.90.0",
     "webpack-cli": "^5.1.4"
   },
-  "mode": "development"
+  "mode": "development",
+  "dependencies": {
+    "date-fns": "^3.3.1"
+  }
 }
