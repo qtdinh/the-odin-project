@@ -74,8 +74,19 @@ function addNewProject() {
     //get the name from the input element
     
     //access input element..
+    const wrapper = document.createElement("div");
     const projectName = document.querySelector("#project-name").value;
+    const minusSpan = document.createElement("span");
     const form = document.getElementsByName("project")[0];
+
+    wrapper.classList.add("project-wrapper");
+
+    minusSpan.innerText = "-";
+    minusSpan.setAttribute("id", "remove-project");
+
+    minusSpan.addEventListener('click', () => {
+        removeProject();
+    })
 
     const newProject = new Project(projectName);
     const newProjectElement = document.createElement("li");
@@ -93,10 +104,23 @@ function addNewProject() {
         newProjectElement.classList.add("selected");
     })
 
-    projects.appendChild(newProjectElement);
+    wrapper.appendChild(newProjectElement);
+    wrapper.appendChild(minusSpan);
+    projects.appendChild(wrapper);
     //we probably need a list of projects to store
     myProjects.push(newProject);
     form.reset();
+}
+
+function removeProject() {
+
+    const projectId = document.querySelector(".selected").getAttribute("project-id");
+    const wrapper = document.querySelector(".selected").parentNode;
+
+    wrapper.remove();
+
+    myProjects.splice(projectId, 1);
+    console.log(myProjects);
 }
 
 function addNewTask() {
@@ -127,6 +151,7 @@ function addNewTask() {
 
     form.reset();
 }
+
 
 function createModal(projectName, task) {
     const taskName = document.createElement("h2");

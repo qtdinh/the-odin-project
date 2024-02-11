@@ -49,7 +49,6 @@ li {
     text-decoration: none;
     list-style-type: none;
     font-size: 30px;
-    margin-bottom: 1rem;
 }
 
 .list-container {
@@ -82,11 +81,27 @@ li {
     box-shadow: 0px 2px 20px var(--lilac);
 }
 
+.project-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.project-wrapper, #projects > li {
+    margin-bottom: 0.8rem;
+}
+
+.project-wrapper h1 {
+    display: inline;
+    margin: 0;
+}
+
 #sidebar li {
+    display: inline-block;
     transition: padding 200ms ease;
 }
 
-#sidebar li:hover, #sidebar li.selected, #add-project:hover {
+#sidebar li:hover, #sidebar li.selected, #add-project:hover, #remove-project:hover {
     color: rgb(189, 20, 121);
 }
 
@@ -203,22 +218,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
 
-#projects-line {
-    display: flex;
-    justify-content: space-between;
-}
-
 #add-project, #remove-project {
     display: flex;
-    align-items: center;
     font-size: 40px;
     font-weight: bold;
+    cursor: pointer;
 }
 
+#remove-project {
+    opacity: 0;
+    pointer-events: none;
+}
 
-#projects-line h1 {
-    display: inline;
-    margin: 0;
+.selected + #remove-project {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 h2 {
