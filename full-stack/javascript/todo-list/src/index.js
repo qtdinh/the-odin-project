@@ -8,32 +8,50 @@
 //3. how to implement projects/todo-lists
 import { Project } from './modules/Project';
 import { Todo } from './modules/Todo';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 const myProjects = [];
 
-const createProjectButton = document.getElementById("new-project");
-const addTaskButton = document.getElementById("add-todo");
-const projectSubmitButton = document.getElementById("project-submit");
-const taskSubmitButton = document.getElementById("todo-submit");
+const addProjectButton = document.getElementById("add-project");
+const addTaskButton = document.getElementById("new-task");
+const submitTaskButton = document.getElementById("create-task");
+const submitProjectButton = document.getElementById("create-project");
 const projects = document.querySelector("#projects");
 const tasksContainer = document.querySelector(".list-container ol");
 const modal = document.getElementById("details");
 const editorModal = document.getElementById("task-editor");
-const closeButton = document.querySelector(".close-modal");
+const projectModal = document.getElementById("project-editor");
+const closeButtonTask = document.querySelector(".close-task-modal");
+const closeButtonProject = document.querySelector(".close-project-modal");
 
-closeButton.addEventListener('click', (event) => {
+closeButtonTask.addEventListener('click', (event) => {
     event.preventDefault();
     editorModal.classList.remove("open");
 })
 
-createProjectButton.addEventListener('click', () => {
+closeButtonProject.addEventListener('click', (event) => {
+    event.preventDefault();
+    projectModal.classList.remove("open");
+})
+
+addProjectButton.addEventListener('click', () => {
+    projectModal.classList.add("open");
+})
+
+addTaskButton.addEventListener('click', () => {
     editorModal.classList.add("open");
 })
 
-// addTaskButton.addEventListener('click', () => {
-//     document.getElementById("todo-dialog").showModal();
-// })
+submitTaskButton.addEventListener('click', (event) => {
+    addNewTask();
+    event.preventDefault();
+    editorModal.classList.remove("open");
+})
+
+submitProjectButton.addEventListener('click', (event) => {
+    addNewProject();
+    event.preventDefault();
+    projectModal.classList.remove("open");
+})
 
 // projectSubmitButton.addEventListener('click', () => {
 //     createNewProject();
@@ -51,20 +69,18 @@ function formatPropertyName(propertyName) {
 }
 
 
-function createNewProject() {
+function addNewProject() {
     //should create a new instance of a project
     //get the name from the input element
     
     //access input element..
     const projectName = document.querySelector("#project-name").value;
-
-    if (projectName <= 0) {
-        return;
-    }
+    const form = document.getElementsByName("project")[0];
 
     const newProject = new Project(projectName);
     const newProjectElement = document.createElement("li");
     newProjectElement.innerText = projectName;
+    newProjectElement.setAttribute("project-id", myProjects.length);
 
     newProjectElement.addEventListener('click', () => {
         const selectedItem = document.querySelector(".selected");
@@ -80,27 +96,36 @@ function createNewProject() {
     projects.appendChild(newProjectElement);
     //we probably need a list of projects to store
     myProjects.push(newProject);
-    console.log(myProjects);
+    form.reset();
 }
 
 function addNewTask() {
     //should create a new instance of a project
     //get the name from the input element
     
-    //access input element..
-    const taskName = document.querySelector("#todo-name").value;
-    const taskDesc = document.querySelector("#todo-desc").value;
-    const dueDate = document.querySelector("#due-date").value;
-    const priority = document.querySelector("#priority").value;
+    //access input element values..
+    const name = document.getElementById("task-name").value;
+    const description = document.getElementById("task-desc").value;
+    const date = document.getElementById("due-date").value;
+    const priority = document.querySelector("input[name='priority']:checked").value;
+    const selectedElement = document.querySelector(".selected");
+    const form = document.getElementsByName("task")[0];
 
-    if (taskName.length <= 0) {
-        return;
+    let selectedProject = defaultProject;
+
+    if (selectedElement) {
+        selectedProject = myProjects[selectedElement.getAttribute("project-id")];
+    }
+    
+    const newTodo = new Todo(name, description, date, priority);
+
+    selectedProject.addTask(newTodo);
+
+    if (selectedElement) {
+        displayTasks(selectedProject);
     }
 
-    const newTask = new Todo(taskName, taskDesc, dueDate, priority);
-    //we probably need a list of projects to store
-    defaultProject.addTask(newTask);
-    console.log(defaultProject);
+    form.reset();
 }
 
 function createModal(projectName, task) {
@@ -163,9 +188,11 @@ function displayTasks(project) {
 //Have a button in the sidebar that checks for project chosen
 
 const defaultProject = new Project("Default");
-myProjects.push(defaultProject);
 const defaultProjectElement = document.createElement("li");
 defaultProjectElement.innerText = "Default";
+//set a ref so that we can access it
+defaultProjectElement.setAttribute("project-id", myProjects.length)
+myProjects.push(defaultProject);
 
 defaultProjectElement.addEventListener('click', () => {
     const selectedItem = document.querySelector(".selected");

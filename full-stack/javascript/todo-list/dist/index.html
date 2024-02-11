@@ -14,7 +14,7 @@
         <div class="body">
             <div id="sidebar">
 
-                <button id="new-project">New Project</button>
+                <button id="new-task">New Task</button>
                 <!-- <dialog id="project-dialog">
                     <label for="project-name">Name of the Project:</label>
                     <form method="dialog">
@@ -23,30 +23,16 @@
                         <button id="project-submit" type="submit">OK</button>
                     </form>
                 </dialog> -->
-<!--                 
-                <button id="add-todo">Add task to a project</button>
-                <dialog id="todo-dialog">
-                    <label for="todo-name">Name:</label>
-                    <label for="todo-desc">Description:</label>
-                    <label for="due-date">Due date:</label>
-                    <label for="priority">Priority:</label>
-                
-                    <form method="dialog">
-                        <input type="text" name="todo-name" id="todo-name" required>
-                        <input type="text" name="todo-desc" id="todo-desc" required>
-                        <input type="text" name="due-date" id="due-date" required>
-                        <input type="text" name="priority" id="priority" required>
-                
-                        <button id="todo-submit" type="submit">OK</button>
-                    </form>
-                </dialog> -->
 
                 <h1>Overview</h1>
                 <ol id="tasks">
                     <li>Tasks</li>
                 </ol>
 
-                <h1>Projects</h1>
+                <div id="projects-line">
+                    <h1>Projects</h1> 
+                    <span id="add-project">+</span>
+                </div>
                 <ol id="projects">
                     
                 </ol>
@@ -64,13 +50,23 @@
                 </div>
             </div>
 
+            <div class="modal" id="project-editor">
+                <form class="editor-inner" name="project" action="#">
+                    <button class="close-modal close-project-modal">×</button>
+                    <input type="text" placeholder="Project name" name="project-name" id="project-name" required />
+
+                    <button id="create-project" type="submit">Add project</button>
+                </form>
+            </div>
+
             <div class="modal" id="task-editor">
-                <form class="task-editor-inner">
-                    <button class="close-modal">×</button>
+                <form class="editor-inner" name="task" action="#">
+                    <button class="close-modal close-task-modal">×</button>
                     <input type="text" placeholder="Task name" name="task-name" id="task-name" required />
                     <input type="text" placeholder="Description" name="task-desc" id="task-desc" />
                     <input type="date" name="due-date" id="due-date" required />
-                    <div>
+                    <div class="priority">
+                        Priority:
                         <label>
                             <input type="radio" name="priority" value="low">
                             Low
@@ -84,7 +80,7 @@
                             High
                         </label>
                     </div>
-                    <button id="create-task" type="submit">OK</button>
+                    <button id="create-task" type="submit">Add task</button>
                 </form>
             </div>
 
