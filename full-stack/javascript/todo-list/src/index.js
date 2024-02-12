@@ -15,13 +15,15 @@ const addProjectButton = document.getElementById("add-project");
 const addTaskButton = document.getElementById("new-task");
 const submitTaskButton = document.getElementById("create-task");
 const submitProjectButton = document.getElementById("create-project");
-const projects = document.querySelector("#projects");
+const projects = document.getElementById("projects");
 const tasksContainer = document.querySelector(".list-container ol");
 const modal = document.getElementById("details");
 const editorModal = document.getElementById("task-editor");
 const projectModal = document.getElementById("project-editor");
 const closeButtonTask = document.querySelector(".close-task-modal");
 const closeButtonProject = document.querySelector(".close-project-modal");
+const tasksButton = document.getElementById("tasks");
+const listElements = document.querySelector("#sidebar li");
 
 closeButtonTask.addEventListener('click', (event) => {
     event.preventDefault();
@@ -53,6 +55,73 @@ submitProjectButton.addEventListener('click', (event) => {
     projectModal.classList.remove("open");
 })
 
+listElements.addEventListener('click', (event) => {
+    const selectedItem = document.querySelector(".selected");
+
+    if (selectedItem) {
+        selectedItem.classList.remove("selected");
+    }
+    event.currentTarget.classList.add("selected");
+})
+
+tasksButton.addEventListener('click', () => {
+    tasksContainer.innerHTML = "";
+    myProjects.forEach(project => {
+        project.getTasks().forEach(task => {
+
+            const projectTask = document.createElement("li");
+            // label with the name of the task
+            projectTask.innerText = task.name;
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("class", "w-6 h-6 text-gray-800 remove-task dark:text-white");
+            svg.setAttribute("aria-hidden", "true");
+            svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            svg.setAttribute("fill", "none");
+            svg.setAttribute("viewBox", "0 0 24 24");
+
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("stroke", "currentColor");
+            path.setAttribute("stroke-linecap", "round");
+            path.setAttribute("stroke-linejoin", "round");
+            path.setAttribute("stroke-width", "2");
+            path.setAttribute("d", "M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z");
+
+            svg.appendChild(path);
+            projectTask.appendChild(svg);
+            const removeTask = projectTask.querySelector(".remove-task");
+
+            removeTask.addEventListener('click', (event) => {
+                event.stopPropagation();
+
+                project.removeTask(task.name);
+                projectTask.remove();
+            })
+
+            projectTask.addEventListener('click', () => {
+                createModal(project.name, task);
+                modal.classList.add("open");
+            })
+            //append into the container
+            tasksContainer.appendChild(projectTask);
+            });
+    })
+})
+
+window.addEventListener('load', () => {
+    loadDataFromLocalStorage();
+    refreshProjectsUI();
+});
+
+// window.addEventListener("storage", (e) => {
+//   document.querySelector(".my-key").textContent = e.key;
+//   document.querySelector(".my-old").textContent = e.oldValue;
+//   document.querySelector(".my-new").textContent = e.newValue;
+//   document.querySelector(".my-url").textContent = e.url;
+//   document.querySelector(".my-storage").textContent = JSON.stringify(
+//     e.storageArea,
+//   );
+// });
+
 // projectSubmitButton.addEventListener('click', () => {
 //     createNewProject();
 // })
@@ -64,18 +133,31 @@ submitProjectButton.addEventListener('click', (event) => {
 
 function formatPropertyName(propertyName) {
     return propertyName
-        .replace(/([A-Z])/g, ' $1') // Insert space before capital letters
+        .replace(/([A-Z])/, ' $1') // Insert space before capital letters
         .replace(/^./, str => str.toUpperCase()); // Capitalize the first letter
 }
 
+function refreshProjectsUI() {
+    // Store the ID of the currently selected project, if any
+    const selectedProjectId = document.querySelector('.selected')?.getAttribute('project-id');
 
-function addNewProject() {
-    //should create a new instance of a project
-    //get the name from the input element
+    // Clear existing project elements
+    projects.innerHTML = "";
     
-    //access input element..
+    // Create and append project elements for each project in myProjects
+    myProjects.forEach((project, index) => {
+        const projectElement = createProjectElement(project, index);
+        projects.appendChild(projectElement);
+
+        // Reapply selected state if this project was previously selected
+        if (index.toString() === selectedProjectId) {
+            projectElement.classList.add('selected');
+        }
+    });
+}
+
+function createProjectElement(project, index) {
     const wrapper = document.createElement("div");
-    const projectName = document.querySelector("#project-name").value;
     const minusSpan = document.createElement("span");
     const form = document.getElementsByName("project")[0];
 
@@ -85,42 +167,48 @@ function addNewProject() {
     minusSpan.setAttribute("id", "remove-project");
 
     minusSpan.addEventListener('click', () => {
-        removeProject();
+        removeProject(index);
     })
 
-    const newProject = new Project(projectName);
     const newProjectElement = document.createElement("li");
-    newProjectElement.innerText = projectName;
-    newProjectElement.setAttribute("project-id", myProjects.length);
+    newProjectElement.innerText = project.name;
+    newProjectElement.setAttribute("project-id", index);
 
-    newProjectElement.addEventListener('click', () => {
+    newProjectElement.addEventListener('click', (event) => {
         const selectedItem = document.querySelector(".selected");
 
         if (selectedItem) {
             selectedItem.classList.remove("selected");
         }
-    
-        displayTasks(newProject);
-        newProjectElement.classList.add("selected");
+        event.currentTarget.classList.add("selected");
+        displayTasks(project);
     })
 
     wrapper.appendChild(newProjectElement);
     wrapper.appendChild(minusSpan);
-    projects.appendChild(wrapper);
-    //we probably need a list of projects to store
-    myProjects.push(newProject);
-    form.reset();
+
+    return wrapper;
 }
 
-function removeProject() {
 
-    const projectId = document.querySelector(".selected").getAttribute("project-id");
-    const wrapper = document.querySelector(".selected").parentNode;
+function addNewProject() {
+    //should create a new instance of a project
+    //get the name from the input element
+    
+    //access input element..
+    const projectName = document.querySelector("#project-name").value;
+    const newProject = new Project(projectName);
+    myProjects.push(newProject);
+    saveDataToLocalStorage();
+    refreshProjectsUI();
+    // form.reset();
+}
 
-    wrapper.remove();
-
-    myProjects.splice(projectId, 1);
-    console.log(myProjects);
+function removeProject(index) {
+    myProjects.splice(index, 1);
+    tasksContainer.innerHTML = "";
+    refreshProjectsUI();
+    saveDataToLocalStorage();
 }
 
 function addNewTask() {
@@ -135,19 +223,21 @@ function addNewTask() {
     const selectedElement = document.querySelector(".selected");
     const form = document.getElementsByName("task")[0];
 
-    let selectedProject = defaultProject;
-
-    if (selectedElement) {
-        selectedProject = myProjects[selectedElement.getAttribute("project-id")];
+    if (!selectedElement) {
+        console.log("Abasho");
+        alert("Please select a project first before adding tasks.");
+        return;
     }
-    
+
+    const selectedProject = myProjects[selectedElement.getAttribute("project-id")];
+
     const newTodo = new Todo(name, description, date, priority);
 
     selectedProject.addTask(newTodo);
 
-    if (selectedElement) {
-        displayTasks(selectedProject);
-    }
+    displayTasks(selectedProject);
+
+    saveDataToLocalStorage()
 
     form.reset();
 }
@@ -181,9 +271,10 @@ function createModal(projectName, task) {
     for (let i = 1; i < taskEntries.length; i++) {
         const [prop, value] = taskEntries[i];
         const propName = formatPropertyName(prop);
+        const valueName = formatPropertyName(value);
         const newParagraph = document.createElement("p");
         newParagraph.setAttribute("id", `${propName}`);
-        newParagraph.innerHTML = `<strong>${propName}: </strong> ${value}`
+        newParagraph.innerHTML = `<strong>${propName}: </strong> ${valueName}`
         modalInner.appendChild(newParagraph);
     }
 
@@ -191,7 +282,7 @@ function createModal(projectName, task) {
 
 function displayTasks(project) {
     //reset the container
-    tasksContainer.innerHTML = "";;
+    tasksContainer.innerHTML = "";
     project.getTasks().forEach(task => {
         //for each task, do what?
         // create a li element
@@ -221,6 +312,7 @@ function displayTasks(project) {
 
             project.removeTask(task.name);
             projectTask.remove();
+            saveDataToLocalStorage();
         })
 
         projectTask.addEventListener('click', () => {
@@ -237,35 +329,76 @@ function displayTasks(project) {
 //When adding a todo, display a list of projects
 //Have a button in the sidebar that checks for project chosen
 
-const defaultProject = new Project("Default");
-const defaultProjectElement = document.createElement("li");
-defaultProjectElement.innerText = "Default";
-//set a ref so that we can access it
-defaultProjectElement.setAttribute("project-id", myProjects.length)
-myProjects.push(defaultProject);
-
-defaultProjectElement.addEventListener('click', () => {
-    const selectedItem = document.querySelector(".selected");
-
-    if (selectedItem) {
-        selectedItem.classList.remove("selected");
+function saveDataToLocalStorage() {
+    // Load existing data from localStorage
+    const storedData = localStorage.getItem('projectKey');
+    let data;
+    if (storedData) {
+        data = JSON.parse(storedData);
+    } else {
+        data = {
+            projects: []
+        };
     }
+
+    data.projects = myProjects.map(project => ({
+        name: project.name,
+        tasks: project.tasks
+    }));
+
+    // Save the updated data back to localStorage
+    localStorage.setItem('projectKey', JSON.stringify(data));
+}
+
+
+function loadDataFromLocalStorage() {
+    const storedData = localStorage.getItem('projectKey');
+    if (storedData) {
+        const data = JSON.parse(storedData);
+        myProjects.splice(0); // Clear existing projects
+        data.projects.forEach(projectData => {
+            const project = new Project(projectData.name);
+            projectData.tasks.forEach(taskData => {
+                const task = new Todo(taskData.name, taskData.description, taskData.dueDate, taskData.priority);
+                project.addTask(task);
+            });
+            myProjects.push(project);
+        });
+    }
+}
+
+// const defaultProject = new Project("Default");
+// const defaultProjectElement = document.createElement("li");
+// defaultProjectElement.innerText = "Default";
+// //set a ref so that we can access it
+// defaultProjectElement.setAttribute("project-id", myProjects.length)
+// myProjects.push(defaultProject);
+
+// defaultProjectElement.addEventListener('click', () => {
+//     const selectedItem = document.querySelector(".selected");
+
+//     if (selectedItem) {
+//         selectedItem.classList.remove("selected");
+//     }
     
-    displayTasks(defaultProject);
-    defaultProjectElement.classList.add("selected");
-})
+//     displayTasks(defaultProject);
+//     defaultProjectElement.classList.add("selected");
+// })
 
-projects.appendChild(defaultProjectElement);
+// projects.appendChild(defaultProjectElement);
 
-const newTodo = new Todo("Example Todo", "Description", "2024-02-01", "High");
-const oneTodo = new Todo("Example Todo1", "Description", "2024-02-02", "High");
-const twoTodo = new Todo("Example Todo2", "Description", "2024-02-03", "High");
-const threeTodo = new Todo("Example Todo3", "Description", "2024-02-04", "High");
-defaultProject.addTask(newTodo);
-defaultProject.addTask(oneTodo);
-defaultProject.addTask(twoTodo);
-defaultProject.addTask(threeTodo);
-console.log(myProjects);
+// const newTodo = new Todo("Example Todo", "Description", "2024-02-01", "High");
+// const oneTodo = new Todo("Example Todo1", "Description", "2024-02-02", "High");
+// const twoTodo = new Todo("Example Todo2", "Description", "2024-02-03", "High");
+// const threeTodo = new Todo("Example Todo3", "Description", "2024-02-04", "High");
+// defaultProject.addTask(newTodo);
+// defaultProject.addTask(oneTodo);
+// defaultProject.addTask(twoTodo);
+// defaultProject.addTask(threeTodo);
+// console.log(myProjects);
+
+// saveDataToLocalStorage();
+
 // console.log(defaultProject);
 
 //4. Users should be able to create new projects and choose which project their todos go into

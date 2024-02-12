@@ -108,6 +108,7 @@ li {
 #remove-project:hover,
 svg:hover {
     color: rgb(189, 20, 121);
+    cursor: pointer;
 }
 
 #sidebar li:hover,
@@ -158,9 +159,6 @@ ol:hover {
     z-index: 999;
 }
 
-.modal p {
-    text-transform: capitalize;
-}
 
 .close-modal {
     position: absolute;
@@ -227,7 +225,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     font-size: 40px;
     font-weight: bold;
-    cursor: pointer;
 }
 
 #remove-project {
