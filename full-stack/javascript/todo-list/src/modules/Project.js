@@ -11,6 +11,10 @@ export class Project {
         this.tasks.push(task);
     }
 
+    removeTask(taskName) {
+        this.tasks = this.tasks.filter(task => task.name !== taskName);
+    }
+
     getTasks() {
         return this.tasks;
     }

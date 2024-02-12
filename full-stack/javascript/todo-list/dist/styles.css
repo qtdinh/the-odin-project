@@ -68,9 +68,10 @@ li {
     height: 50px;
     color: var(--dark-purple);
     background-color: var(--lilac);
-    padding-left: 1rem;
+    padding: 0 1rem 0 1rem;
     border-radius: 15px;
     margin-top: 1rem;
+    justify-content: space-between;
     align-items: center;
 
     transition: transform 0.3s ease;
@@ -101,7 +102,11 @@ li {
     transition: padding 200ms ease;
 }
 
-#sidebar li:hover, #sidebar li.selected, #add-project:hover, #remove-project:hover {
+#sidebar li:hover, 
+#sidebar li.selected, 
+#add-project:hover, 
+#remove-project:hover,
+svg:hover {
     color: rgb(189, 20, 121);
 }
 
@@ -237,4 +242,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 h2 {
     margin: 0;
+}
+
+svg {
+    height: 30px;
+    width: auto;
 }
