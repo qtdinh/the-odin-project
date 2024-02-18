@@ -7,23 +7,39 @@
         <script src="index.js" defer></script>
     </head>
     <body>
-        <form id="browser">
-            <label for="email">Email: </label>
-            <input type="email" id="email" name="email"/>
-            <label for="country">Country: </label>
-            <select id="country">
-                <option value="cn">China</option>
-                <option value="fi">Finland</option>
-                <option value="us">United States of America</option>
-                <option value="vn">Vietnam</option>
-            </select>
-            <label for="zip-code">ZIP: </label>
-            <input type="text" id="zip-code" name="zip" />
-            <label for="password">Password: </label>
-            <input type="password" id="password" name="password" />
-            <label for="password-confirm">Password confirmation: </label>
-            <input type="password-confirm" id="password-confirm" name="password-confirm" />
-            <input type="submit" value="Submit" />
+        <form novalidate>
+            <p>
+                <label for="email-addr"> 
+                    <span>Email:</span>
+                    <input type="email" id="email-addr" name="email" required />
+                    <span class="error" aria-live="polite"></span>
+                </label>
+            </p>
+            <label for="country">
+                <span>Country:</span>
+                <select id="country">
+                    <option value="cn">China</option>
+                    <option value="fi">Finland</option>
+                    <option value="us">United States of America</option>
+                    <option value="vn">Vietnam</option>
+                </select>
+            </label>
+            <label for="zip-code">
+                <span>ZIP:</span> 
+                <input type="text" id="zip-code" name="zip" required />
+                <span class="error" aria-live="polite"></span>
+            </label>
+            <label for="password">
+                <span>Password:</span>
+                <input type="password" id="password" name="password" />
+                <span class="error" aria-live="polite"></span>
+            </label>
+            <label for="password-confirm">
+                <span>Password confirmation:</span>
+                <input type="password" id="password-confirm" name="password-confirm" />
+                <span class="error" aria-live="polite"></span>
+            </label>
+            <button>Submit</button>
         </form>
     </body>
 </html>
