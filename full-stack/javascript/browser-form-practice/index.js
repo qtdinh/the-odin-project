@@ -7,10 +7,12 @@ const country = document.getElementById("country");
 let selectedCountry = country.value;
 const zipCode = document.getElementById("zip-code");
 const zipCodeError = document.querySelector("#zip-code + span.error");
-const passwordInput = document.getElementById("password");
+const password = document.getElementById("password");
+const passwordError = document.querySelector("#password + span.error");
 const passwordConfirmation = document.getElementById("password-confirm");
+const confirmError = document.querySelector("#password-confirm + span.error");
 
-email.addEventListener("input", (event) => {
+email.addEventListener("input", () => {
   if (email.validity.valid) {
     //Remove error message if field happens to be valid
     emailError.textContent = ""; // Reset the content of the message
@@ -23,21 +25,53 @@ email.addEventListener("input", (event) => {
 
 country.addEventListener("change", () => {
   selectedCountry = country.value;
-  zipCodeError.textContent = "";
-  zipCodeError.className = "error";
+  resetError(zipCode, zipCodeError);
 });
 
 window.onload = () => {
-  zipCode.oninput = showZIPError;
+  zipCode.oninput = checkZIP;
 };
 
-passwordInput;
+password.addEventListener("input", () => {
+  const errorMessage = validatePassword(); // Get error message
+  if (errorMessage) {
+    password.setCustomValidity("red");
+  } else {
+    resetError(password, passwordError); // Reset error state if there is no error message
+  }
+});
+
+passwordConfirmation.addEventListener("input", () => {
+  const errorMessage = validatePasswordMatch(); // Get error message
+  if (errorMessage) {
+    passwordConfirmation.setCustomValidity("red");
+  } else {
+    resetError(passwordConfirmation, confirmError); // Reset error state if there is no error message
+  }
+});
 
 form.addEventListener("submit", (event) => {
+  let isValid = true;
+
   if (!email.validity.valid) {
-    // If it isn't, we display an appropriate error message
     showEmailError();
-    // Then we prevent the form from being sent by canceling the event
+    isValid = false;
+  }
+
+  if (!zipCode.validity.valid) {
+    checkZIP();
+    isValid = false;
+  }
+
+  if (validatePassword()) {
+    isValid = false;
+  }
+
+  if (validatePasswordMatch()) {
+    isValid = false;
+  }
+
+  if (!isValid) {
     event.preventDefault();
   }
 });
@@ -54,7 +88,39 @@ function showEmailError() {
   emailError.className = "error active";
 }
 
-function showZIPError() {
+function validatePassword() {
+  if (password.validity.valueMissing) {
+    passwordError.textContent = "You need to enter a password.";
+    passwordError.className = "error active";
+    return true;
+  } else if (password.value.length < 6) {
+    passwordError.textContent = "Password must be at least 6 characters";
+    passwordError.className = "error active";
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function validatePasswordMatch() {
+  if (passwordConfirmation.validity.valueMissing) {
+    confirmError.textContent = "You must re-enter your password.";
+    confirmError.className = "error active";
+    return true;
+  } else if (password.value != passwordConfirmation.value) {
+    confirmError.textContent = "The passwords don't match.";
+    confirmError.className = "error active";
+    return true;
+  } else if (!password.validity.valid) {
+    confirmError.textContent = "";
+    confirmError.className = "error";
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function checkZIP() {
   //set an object for constraints
   const constraints = {
     cn: [
@@ -82,13 +148,22 @@ function showZIPError() {
   const constraint = new RegExp(constraints[selectedCountry][0], "");
 
   if (constraint.test(zipCode.value)) {
-    // No need to do anything if the zip code is valid
-    zipCode.setCustomValidity("");
-    zipCodeError.textContent = "";
-    zipCodeError.className = "error";
+    resetError(zipCode, zipCodeError);
+    return false;
   } else {
-    zipCode.setCustomValidity("red");
-    zipCodeError.textContent = constraints[selectedCountry][1];
-    zipCodeError.className = "error active";
+    setError(zipCode, zipCodeError, constraints[selectedCountry][1]);
+    return true;
   }
+}
+
+function setError(input, error, text) {
+  input.setCustomValidity(text);
+  error.textContent = text;
+  error.className = "error active";
+}
+
+function resetError(input, error) {
+  input.setCustomValidity("");
+  error.textContent = "";
+  error.classList.remove("active");
 }
