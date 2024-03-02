@@ -48,12 +48,23 @@ function getLocation(event) {
   });
 }
 
-function getWeatherData() {
+function getWeatherData(event) {
   event.preventDefault();
   //use a .then() to get the result from an asynchronous call in a synchronous function
   fetchFromAPI().then((result) => {
-    console.log(result.current);
+    displayWeatherData(result.current);
   });
+}
+
+function displayWeatherData(data) {
+  const container = document.querySelector(".weatherDataContainer");
+  container.innerHTML = ""; // Clear previous content
+
+  for (const [key, value] of Object.entries(data)) {
+    const element = document.createElement("p");
+    element.textContent = `${key}: ${value}`;
+    container.appendChild(element);
+  }
 }
 
 const form = document.querySelector(".weatherForm");
