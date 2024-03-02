@@ -6,8 +6,11 @@
 import { apiKey, baseUrl } from "./environment";
 
 async function fetchFromAPI() {
+  let location = document.getElementById("location").value;
+  let formattedLocation = location.toLowerCase().replace(/\s/g, "_");
+
   const response = await fetch(
-    `${baseUrl}/current.json?key=${apiKey}&q=10001`,
+    `${baseUrl}/current.json?key=${apiKey}&q=${formattedLocation}`,
     { mode: "cors" }
     // {
     //   method: "GET",
@@ -16,16 +19,38 @@ async function fetchFromAPI() {
     //   },
     // }
   ).then(function (response) {
-    return response.json();
+    return response.json(); //return after fetching
   });
 
+  //imperative to return from the function to use it
   return response;
 }
 
-function getLocation() {
+function getLocation(event) {
+  event.preventDefault();
+  //use a .then() to get the result from an asynchronous call in a synchronous function
   fetchFromAPI().then((result) => {
     console.log(result.location);
   });
 }
 
-getLocation();
+function getWeatherData() {
+  event.preventDefault();
+  //use a .then() to get the result from an asynchronous call in a synchronous function
+  fetchFromAPI().then((result) => {
+    console.log(result.current);
+  });
+}
+
+const form = document.querySelector(".weatherForm");
+form.addEventListener("submit", getWeatherData);
+
+// let location = getLocation();
+// location.then((data) => {
+//   console.log(data);
+// });
+
+// let weatherData = getWeatherData();
+// weatherData.then((data) => {
+//   console.log(data);
+// });
