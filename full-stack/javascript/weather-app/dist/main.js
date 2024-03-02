@@ -1,0 +1,1 @@
+(()=>{"use strict";!async function(){await fetch("https://api.weatherapi.com/v1/current.json?key=ba850579ec3b41dd9d250905242102&q=10001",{mode:"cors"}).then((function(n){return n.json()})).then((function(n){console.log(n)}))}()})();
