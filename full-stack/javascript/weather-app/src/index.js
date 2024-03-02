@@ -5,9 +5,19 @@
 
 import { apiKey, baseUrl } from "./environment";
 
+const img = document.querySelector("img");
+
 async function fetchFromAPI() {
   let location = document.getElementById("location").value;
   let formattedLocation = location.toLowerCase().replace(/\s/g, "_");
+
+  const image = await fetch(
+    `https://api.giphy.com/v1/gifs/translate?api_key=8AmpbDu6XfP9Bd0svLzkRBw1LiFP0vZJ&s=${location}`,
+    { mode: "cors" }
+  );
+
+  const imageData = await image.json();
+  img.src = imageData.data.images.original.url;
 
   const response = await fetch(
     `${baseUrl}/current.json?key=${apiKey}&q=${formattedLocation}`,
