@@ -3,7 +3,7 @@
 // 3. change the look of the page based on the data
 // 3.1. Giphy API?
 
-import { apiKey, baseUrl } from "./environment";
+import { apiKey, baseUrl, gifKey } from "./environment";
 
 const img = document.querySelector("img");
 
@@ -11,13 +11,7 @@ async function fetchFromAPI() {
   let location = document.getElementById("location").value;
   let formattedLocation = location.toLowerCase().replace(/\s/g, "_");
 
-  const image = await fetch(
-    `https://api.giphy.com/v1/gifs/translate?api_key=8AmpbDu6XfP9Bd0svLzkRBw1LiFP0vZJ&s=${location}`,
-    { mode: "cors" }
-  );
-
-  const imageData = await image.json();
-  img.src = imageData.data.images.original.url;
+  getGif(location);
 
   const response = await fetch(
     `${baseUrl}/current.json?key=${apiKey}&q=${formattedLocation}`,
@@ -34,6 +28,16 @@ async function fetchFromAPI() {
 
   //imperative to return from the function to use it
   return response;
+}
+
+async function getGif(location) {
+  const image = await fetch(
+    `https://api.giphy.com/v1/gifs/translate?api_key=${gifKey}=${location}`,
+    { mode: "cors" }
+  );
+
+  const imageData = await image.json();
+  img.src = imageData.data.images.original.url;
 }
 
 function getLocation(event) {
