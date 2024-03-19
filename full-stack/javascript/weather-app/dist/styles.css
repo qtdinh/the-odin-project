@@ -1,5 +1,22 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    backdrop-filter: blur(10px);
+}
+
+
 form.weatherForm {
     display: table;
+    color: white;
+    background-color: midnightblue;
+    padding: 5px;
+}
+
+form.weatherForm > p {
+    margin-bottom: 5px;
 }
 
 div.weatherForm {
@@ -20,8 +37,34 @@ section {
     display: flex;
 }
 
+/* section > :not(div) {
+    align-items: center;
+} */
+
 section ul {
     list-style: none;
     margin-block-start: 0;
     margin-block-end: 0;
+}
+
+section li {
+    font-weight: bold;
+}
+
+#fahrenheit {
+    font-size: 32px;
+}
+
+p {
+    margin: 0;
+}
+
+#weatherImage {
+    height: 100px;
+    width: 100px;
+}
+
+form {
+    border: 1px solid black;
+    border-radius: 5px;
 }

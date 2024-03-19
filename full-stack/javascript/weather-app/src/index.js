@@ -38,29 +38,60 @@
 
 import { apiKey, baseUrl, gifKey } from "./environment";
 
-const img = document.querySelector("img");
+const weatherImage = document.getElementById("weatherImage");
+
+function formatDate(dateString) {
+  const date = new Date(dateString); //parse into date
+
+  const formattedDate = date.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+    timeZoneName: "short",
+  });
+
+  return `${formattedDate} ${formattedTime}`;
+}
 
 function createWeatherDisplay(data) {
   const conditions = document.querySelector(".weatherForm p");
-  conditions.innerHTML = `Current conditions at ${data.name}<br>
-  <strong>Lat:</strong> ${data.lat} <strong>Lon:</strong> ${data.lon}`;
+  conditions.innerHTML = `Current conditions at <strong>${data.name}</strong><br>
+  <strong>Lat:</strong> ${data.lat}°N <strong>Lon:</strong> ${data.lon}°W`;
+
+  weatherImage.src = `https:${data.condition.icon}`;
 
   const weatherCondition = document.getElementById("condition");
   const temperatureF = document.getElementById("fahrenheit");
   const temperatureC = document.getElementById("celsius");
 
-  weatherCondition.textContent = `${data.condition}`;
-  temperatureF.textContent = `${data.temp_f}`;
-  temperatureC.textContent = `${data.temp_c}`;
+  weatherCondition.textContent = `${data.condition.text}`;
+  temperatureF.textContent = `${data.temp_f}°F`;
+  temperatureC.textContent = `${data.temp_c}°C`;
 
   const weatherItems = [
-    { name: "Humidity", value: `${data.humidity}` },
-    { name: "Wind Speed", value: `${data.wind_mph}` },
-    { name: "Barometer", value: `${data.pressure_in}` },
-    { name: "Dewpoint", value: `0` },
-    { name: "Visibility", value: `${data.vis_miles}` },
-    { name: "Last update", value: `${data.last_updated}` },
+    { name: "Humidity", value: `${data.humidity}`, id: "humidity" },
+    { name: "Wind Speed", value: `${data.wind_mph}`, id: "windSpeed" },
+    { name: "Barometer", value: `${data.pressure_in}`, id: "barometer" },
+    { name: "Dewpoint", value: `0`, id: "dewpoint" },
+    { name: "Visibility", value: `${data.vis_miles}`, id: "visibility" },
+    {
+      name: "Last update",
+      value: `${formatDate(data.last_updated)}`,
+      id: "lastUpdate",
+    },
   ];
+
+  weatherItems.forEach((item) => {
+    const current = document.getElementById(`${item.id}`);
+
+    current.textContent += ` ${item.value}`;
+  });
 }
 
 async function fetchFromAPI() {
@@ -93,7 +124,10 @@ async function getGif(location) {
   );
 
   const imageData = await image.json();
-  img.src = imageData.data.images.original.url;
+  document.body.style.backgroundImage = `url(${imageData.data.images.original.url})`;
+  document.body.style.backgroundSize = "cover"; // Adjust background size as needed
+  document.body.style.backgroundPosition = "center"; // Adjust background position as needed
+  // document.body.style.filter = "blur(10px)"; // Apply a blur effect
 }
 
 function getWeatherData() {
@@ -138,17 +172,19 @@ async function displayWeatherData(event) {
   const data = await getWeatherData();
   console.log(data);
 
-  for (const [key, value] of Object.entries(data)) {
-    const element = document.createElement("p");
-    if (typeof value === "object") {
-      // If the value is an object, stringify it
-      element.textContent = `${key}: ${JSON.stringify(value)}`;
-    } else {
-      // Otherwise, display it as normal
-      element.textContent = `${key}: ${value}`;
-    }
-    container.appendChild(element);
-  }
+  // for (const [key, value] of Object.entries(data)) {
+  //   const element = document.createElement("p");
+  //   if (typeof value === "object") {
+  //     // If the value is an object, stringify it
+  //     element.textContent = `${key}: ${JSON.stringify(value)}`;
+  //   } else {
+  //     // Otherwise, display it as normal
+  //     element.textContent = `${key}: ${value}`;
+  //   }
+  //   container.appendChild(element);
+  // }
+
+  createWeatherDisplay(data);
 }
 
 const form = document.querySelector(".weatherForm");

@@ -8,11 +8,13 @@
     </head>
     <body>
         <form action="" method="get" class="weatherForm">
+
             <p>
 
             </p>
 
             <section>
+                <img src="" alt="Weather image" id="weatherImage">
                 <div>
                     <p id="condition"></p>
                     <strong id="fahrenheit"></strong><br>
@@ -29,9 +31,16 @@
                 </ul>
             </section>
 
-        </form>
+            <div class="weatherForm">
+                <label for="location">
+                    <input type="text" name="location" id="location" required />
+                </label>
+            </div>
+            <div class="weatherForm">
+                <input type="submit" value="Fetch weather data" />
+            </div>
 
-        <img src="" alt="Giphy image" />
+        </form>
 
         <div class="weatherDataContainer">
             
