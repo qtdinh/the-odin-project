@@ -10,16 +10,9 @@ function mergeSort(array) {
 
   // recursively split
   leftHalf = mergeSort(leftHalf);
-  // 3 2 1 13
-  // [3 2] [1 13]
   rightHalf = mergeSort(rightHalf);
-  // 8 5 0 1
-  // [8 5] [0 1]
 
-  // console.log("leftHalf", leftHalf);
-  // console.log("rightHalf", rightHalf);
-  // leftHalf (1) [3]
-  // rightHalf (1) [2]
+  // compare the values and combine into a merged array
   let sortedArray = [];
 
   while (leftHalf.length != 0 && rightHalf.length != 0) {
@@ -34,18 +27,11 @@ function mergeSort(array) {
     }
   }
 
-  while (leftHalf.length != 0) {
-    sortedArray.push(leftHalf[0]);
-    // console.log(sortedArray);
-    leftHalf.shift();
-  }
+  // previous loop does not check all cases, check if any remainders,
+  // and append the rest to the end if that is the case
+  if (leftHalf.length != 0) sortedArray = sortedArray.concat(leftHalf);
 
-  while (rightHalf.length != 0) {
-    sortedArray.push(rightHalf[0]);
-    rightHalf.shift();
-  }
-  // compare values
-  // halves need to come back together and compare again
+  if (rightHalf.length != 0) sortedArray = sortedArray.concat(rightHalf);
 
   return sortedArray;
 }
