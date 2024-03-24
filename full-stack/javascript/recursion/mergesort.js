@@ -14,24 +14,30 @@ function mergeSort(array) {
 
   // compare the values and combine into a merged array
   let sortedArray = [];
+  let leftIndex = 0;
+  let rightIndex = 0;
 
-  while (leftHalf.length != 0 && rightHalf.length != 0) {
-    if (leftHalf[0] > rightHalf[0]) {
-      sortedArray.push(rightHalf[0]);
-      // console.log(sortedArray);
-      rightHalf.shift();
+  while (leftIndex < leftHalf.length && rightIndex < rightHalf.length) {
+    if (leftHalf[leftIndex] > rightHalf[rightIndex]) {
+      sortedArray.push(rightHalf[rightIndex]);
+      rightIndex++;
     } else {
-      sortedArray.push(leftHalf[0]);
-      // console.log(sortedArray);
-      leftHalf.shift();
+      sortedArray.push(leftHalf[leftIndex]);
+      leftIndex++;
     }
   }
 
   // previous loop does not check all cases, check if any remainders,
   // and append the rest to the end if that is the case
-  if (leftHalf.length != 0) sortedArray = sortedArray.concat(leftHalf);
+  while (leftIndex < leftHalf.length) {
+    sortedArray.push(leftHalf[leftIndex]);
+    leftIndex++;
+  }
 
-  if (rightHalf.length != 0) sortedArray = sortedArray.concat(rightHalf);
+  while (rightIndex < rightHalf.length) {
+    sortedArray.push(rightHalf[rightIndex]);
+    rightIndex++;
+  }
 
   return sortedArray;
 }
