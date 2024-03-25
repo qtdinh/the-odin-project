@@ -28,6 +28,24 @@ class HashMap {
     return this.keysCount / this.buckets.length;
   }
 
+  resize() {
+    if (this.getLoadFactorThreshold() > this.loadFactor) {
+      const newCapacity = this.buckets.length * 2;
+      const newBuckets = new Array(newCapacity).fill(null);
+
+      this.entries().forEach(([key, value]) => {
+        //get new index with length
+        const newIndex = this.hash(key) % newCapacity;
+        //add node to new array
+        if (newBuckets[newIndex])
+          newBuckets[newIndex].next = new Node(key, value);
+        else newBuckets[newIndex] = new Node(key, value);
+      });
+
+      this.buckets = newBuckets;
+    }
+  }
+
   hash(key) {
     let hashCode = 0;
 
@@ -43,13 +61,15 @@ class HashMap {
 
   set(key, value) {
     if (this.buckets[this.hash(key)]) {
-      console.log(`I am the old ${value}`);
-      console.log(`I am the new ${value}`);
+      // console.log(`I am the old ${value}`);
+      // console.log(`I am the new ${value}`);
       this.buckets[this.hash(key)].next = new Node(key, value);
+      return;
     }
 
     this.buckets[this.hash(key)] = new Node(key, value);
     this.keysCount++;
+    this.resize();
   }
 
   get(key) {
