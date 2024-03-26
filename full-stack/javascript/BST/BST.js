@@ -41,8 +41,30 @@ class Tree {
       this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   }
+
+  insert(value) {
+    if (!this.root) {
+      this.root = new Node(value);
+      return;
+    }
+
+    //acts as a reference variable
+    let root = this.root;
+
+    while (root.left !== null || root.right !== null) {
+      if (value < root.value) root = root.left;
+      else root = root.right;
+    }
+
+    if (value < root.value) root.left = new Node(value);
+    else if (value > root.value) root.right = new Node(value);
+  }
 }
 
-let BST = new Tree([1, 2, 3, 4, 5, 6, 7]);
+let BST = new Tree([1, 2, 3, 4, 5, 6]);
+
 BST.prettyPrint(BST.root);
+BST.insert(7);
 console.log(BST.root);
+
+BST.prettyPrint(BST.root);
