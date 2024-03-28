@@ -18,7 +18,6 @@ class Tree {
 
   buildTree(array, start = 0, end = array.length - 1) {
     array = this.sort(array);
-
     const mid = parseInt((start + end) / 2);
 
     if (mid > array.length - 1 || start > end) return null;
@@ -50,22 +49,16 @@ class Tree {
     }
   }
 
-  insert(value) {
-    if (!this.root) {
-      this.root = new Node(value);
-      return;
+  insert(value, root = this.root) {
+    if (root === null) {
+      root = new Node(value);
+      return root;
     }
 
-    //acts as a reference variable
-    let root = this.root;
+    if (value < root.value) root.left = this.insert(value, root.left);
+    else if (value > root.value) root.right = this.insert(value, root.right);
 
-    while (root.left !== null || root.right !== null) {
-      if (value < root.value) root = root.left;
-      else root = root.right;
-    }
-
-    if (value < root.value) root.left = new Node(value);
-    else if (value > root.value) root.right = new Node(value);
+    return root;
   }
 
   deleteItem(value, root = this.root) {
@@ -115,34 +108,140 @@ class Tree {
     }
   }
 
-  levelOrder(queue = [this.root], visited = []) {
+  // levelOrder(queue = [this.root], visited = [], callback = null) {
+  //   // 1. take a queue
+  //   // 2. append BST to queue
+  //   // 3. take the first node out and append to a variable
+  //   // 4.
+  //   // 4. should return an array of values
+  //   if (queue.length === 0) return visited;
+
+  //   const root = queue.shift();
+
+  //   visited.push(root);
+
+  //   if (root.left !== null) {
+  //     queue.push(root.left);
+  //   }
+  //   if (root.right !== null) {
+  //     queue.push(root.right);
+  //   }
+  //   return this.levelOrder(queue, visited);
+  // }
+
+  levelOrder(queue = [this.root], visited = [], callback = null) {
     // 1. take a queue
-    // 2. append node visited to the queue
-    // 3. as we go through the nodes in the queue, add the node's unvisited neighbors to the queue
+    // 2. append BST to queue
+    // 3. take the first node out and append to a variable
+    // 4.
     // 4. should return an array of values
-    if (queue.length === 0) return visited;
+    while (queue.length != 0) {
+      const root = queue.pop();
+      visited.push(root);
 
-    const root = queue.shift();
-
-    visited.push(root.value);
-
-    // if (queue.length === 0) {
-    //   queue.push(root);
-    //   visited.push(root.value);
-    // }
-
-    if (root.left !== null) {
-      queue.push(root.left);
+      if (root.left !== null) {
+        queue.push(root.left);
+      }
+      if (root.right !== null) {
+        queue.push(root.right);
+      }
     }
-    if (root.right !== null) {
-      queue.push(root.right);
+
+    return visited;
+  }
+
+  inOrder(root = this.root, array = [], callback = null) {
+    if (root === null) return array;
+
+    this.inOrder(root.left, array); // Traverse left subtree
+    array.push(root.value); // Visit current node
+    this.inOrder(root.right, array); // Traverse right subtree
+
+    return array;
+  }
+
+  preOrder(root = this.root, array = [], callback = null) {
+    if (root === null) return array;
+
+    array.push(root.value);
+    this.preOrder(root.left, array);
+    this.preOrder(root.right, array);
+
+    return array;
+  }
+
+  postOrder(root = this.root, array = [], callback = null) {
+    if (root === null) return array;
+
+    this.postOrder(root.left, array); // Traverse left subtree
+    this.postOrder(root.right, array); // Traverse right subtree
+    array.push(root.value); // Visit current node
+
+    return array;
+  }
+
+  height(node) {
+    if (node === null) return 0;
+
+    return Math.max(this.height(node.left), this.height(node.right)) + 1;
+  }
+
+  depth(node) {
+    let root = this.root;
+    let depth = 0;
+
+    while (root !== node) {
+      if (root.value < node.value) {
+        root = root.right;
+        depth++;
+      } else if (root.value > node.value) {
+        root = root.left;
+        depth++;
+      }
     }
-    return this.levelOrder(queue, visited);
+    return depth;
+  }
+
+  isBalanced() {
+    let leftSubtree = this.height(this.root.left);
+    let rightSubtree = this.height(this.root.right);
+
+    return Math.abs(leftSubtree - rightSubtree) <= 1 ? true : false;
+  }
+
+  rebalance() {
+    let newArray = this.inOrder();
+
+    this.root = this.buildTree(newArray);
   }
 }
 
-let BST = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-BST.prettyPrint(BST.root);
-console.log(BST.levelOrder());
+function driverScript() {
+  let BST = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 99, 34]);
+  BST.prettyPrint(BST.root);
+  console.log(BST.isBalanced());
+  console.log(BST.preOrder());
+  console.log(BST.inOrder());
+  console.log(BST.postOrder());
+  BST.insert(101);
 
+  BST.insert(234);
+
+  BST.insert(400);
+
+  BST.insert(353);
+  BST.insert(870);
+  BST.insert(220);
+  BST.prettyPrint(BST.root);
+  console.log(BST.isBalanced());
+  BST.rebalance();
+  console.log(BST.isBalanced());
+  BST.prettyPrint(BST.root);
+  console.log(BST.preOrder());
+  console.log(BST.inOrder());
+  console.log(BST.postOrder());
+}
+
+driverScript();
+// console.log(BST.levelOrder());
 // BST.prettyPrint(BST.root);
