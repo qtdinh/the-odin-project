@@ -56,29 +56,30 @@ class Graph {
   }
 
   knightMoves(start, end, queue = [], visited = new Set()) {
-    if (queue.length === 0) {
-      queue.push(start);
-    }
-    const paths = [];
+    //build graph with the root node
+    this.buildGraph(start);
+
+    queue.push([start]);
 
     while (queue.length > 0) {
-      let node = queue.shift(); // Dequeue a node from the queue
+      let path = queue.shift(); // Dequeue a node from the queue
+
+      visited.add(path.toString());
+
+      // gets the latest path
+      const node = path[path.length - 1];
 
       if (node.toString() === end.toString()) {
         // If the current node is the end node, return the visited Set
-        return visited;
+        return path;
       }
-
-      // Mark the node as visited
-      visited.add(node.toString());
 
       if (this.adjList[node]) {
         this.adjList[node].forEach((neighbor) => {
           const neighborStr = neighbor.toString();
-          if (!visited.has(neighborStr)) {
-            // If the neighbor has not been visited, enqueue it
-            queue.push(neighbor);
-          }
+          //copy path and append neighbor to it
+          const newPath = [...path, neighbor];
+          if (!visited.has(neighborStr)) queue.push(newPath); //if not visited, enqueue
         });
       }
     }
@@ -90,12 +91,8 @@ let graph = new Graph();
 
 // console.log(graph.buildGraph([0, 0]));
 
-graph.buildGraph([0, 0]);
-
-graph.knightMoves([0, 0], [4, 3]).forEach((item) => {
+graph.knightMoves([3, 3], [0, 0]).forEach((item) => {
   console.log(item);
 });
-
-console.log(graph.knightMoves([0, 0], [3, 3]));
 
 // console.log(graph.buildGraph([0, 0]));
