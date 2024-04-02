@@ -38,6 +38,7 @@ class Graph {
     visited.add(start.toString());
 
     //Go through each move, and given it fulfills the rules, it will add an adjacent position.
+    //O(n), where n is constant
     this.moves.forEach(([x, y]) => {
       const [nx, ny] = [start[0] + x, start[1] + y];
       const newPos = [nx, ny].toString();
@@ -46,6 +47,7 @@ class Graph {
       }
     });
 
+    // need to create adjacencies for neighbors as well
     if (this.adjList[start]) {
       this.adjList[start].forEach(([x, y]) => {
         this.buildGraph([x, y], visited);
@@ -62,7 +64,7 @@ class Graph {
     queue.push([start]);
 
     while (queue.length > 0) {
-      let path = queue.shift(); // Dequeue a node from the queue
+      let path = queue.shift(); // Dequeue a node from the queue // O(n)
 
       visited.add(path.toString());
 
@@ -76,6 +78,7 @@ class Graph {
 
       if (this.adjList[node]) {
         this.adjList[node].forEach((neighbor) => {
+          // O(E)
           const neighborStr = neighbor.toString();
           //copy path and append neighbor to it
           const newPath = [...path, neighbor];
